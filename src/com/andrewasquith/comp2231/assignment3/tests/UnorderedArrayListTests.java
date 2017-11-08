@@ -1,18 +1,44 @@
 /**
- * 
+ * @author Andrew Asquith
+ * COMP 2231
+ * Assignment 3
+ * Unit Test Classes
  */
 package com.andrewasquith.comp2231.assignment3.tests;
 
+/**
+ * Junit assertions
+ */
 import static org.junit.Assert.*;
 
+/**
+ * Other API interfaces and exceptions
+ */
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.ConcurrentModificationException;
+
+/**
+ * Junit annotations
+ */
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Class under test
+ */
 import com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList;
 
 /**
- * @author Andrew
+ * Required exceptions for expectations
+ */
+import jsjf.exceptions.ElementNotFoundException;
+import jsjf.exceptions.EmptyCollectionException;
+
+/**
+ * UnorderedArrayList Test Fixture
+ * Exercises the UnorderedArrayList functionality and it's Iterator
  *
  */
 public class UnorderedArrayListTests {
@@ -125,11 +151,28 @@ public class UnorderedArrayListTests {
 		list.addToRear(12);
 		assertEquals(12, list.size());
 	}
+	
+	/**
+	 * Test that the list will expand after 10 elements added to front and rear
+	 */
+	public final void testListWillHoldMoreThanInitialCapacityWhenAddingToFrontAndRear() {
+		list.addToRear(1);
+		list.addToFront(2);
+		list.addToRear(3);
+		list.addToFront(4);
+		list.addToRear(5);
+		list.addToFront(6);
+		list.addToRear(7);
+		list.addToFront(8);
+		list.addToRear(9);
+		list.addToFront(10);
+		list.addToRear(11);
+		list.addToFront(12);
+		assertEquals(12, list.size());
+	}
 
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#first()}
-	 * when there is a single element.
+	 * Test first returns correctly when there is a single element.
 	 */
 	@Test
 	public final void testFirstWithSingleElement() {
@@ -139,9 +182,7 @@ public class UnorderedArrayListTests {
 	}
 
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#last()}
-	 * when there is a single element.
+	 * Test last returns correctly  when there is a single element.
 	 */
 	@Test
 	public final void testLastWithSingleElement() {
@@ -151,12 +192,10 @@ public class UnorderedArrayListTests {
 	}
 
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#first()}.
-	 * When there is more than one element added to the front
+	 * Test first returns correctly when there is more than one element added to the front
 	 */
 	@Test
-	public final void TestFirstWithThreeElementsAddedToFront() {
+	public final void testFirstWithThreeElementsAddedToFront() {
 		Integer expected = new Integer(9);
 		list.addToFront(7);
 		list.addToFront(8);
@@ -165,9 +204,7 @@ public class UnorderedArrayListTests {
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#first()}.
-	 * When there is more than one element added to the rear
+	 * Test first returns correctly when there is more than one element added to the rear
 	 */
 	@Test
 	public final void testFirstWithThreeElementsAddedToRear() {
@@ -179,9 +216,7 @@ public class UnorderedArrayListTests {
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#first()}.
-	 * When there is more than one element added to the front and rear
+	 * Test first returns correctly when there is more than one element added to the front and rear
 	 */
 	@Test
 	public final void testFirstWithElementsAddedToFrontAndRear() {
@@ -194,9 +229,7 @@ public class UnorderedArrayListTests {
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#last()}.
-	 * When there is more than one element added to the front
+	 * Test last returns correctly when there is more than one element added to the front
 	 */
 	@Test
 	public final void testLastWithThreeElementsAddedToFront() {
@@ -208,9 +241,7 @@ public class UnorderedArrayListTests {
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#last()}.
-	 * When there is more than one element added to the rear
+	 * Test last returns correctly when there is more than one element added to the rear
 	 */
 	@Test
 	public final void testLastWithThreeElementsAddedToRear() {
@@ -222,9 +253,7 @@ public class UnorderedArrayListTests {
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#last()}.
-	 * When there is more than one element added to the front and rear
+	 * Test last returns correctly when there is more than one element added to the front and rear
 	 */
 	@Test
 	public final void testFLastWithElementsAddedToFrontAndRear() {
@@ -236,14 +265,8 @@ public class UnorderedArrayListTests {
 		assertEquals(expected,list.last());
 	}
 	
-	
-
-
-
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#isEmpty()}.
-	 * Adds and then removes a single element
+	 * Test is empty is true after adding and then removing a single element
 	 */
 	@Test
 	public final void testIsEmptyAfterAdditionAndRemoval() {
@@ -253,9 +276,7 @@ public class UnorderedArrayListTests {
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#isEmpty()}.
-	 * Adds two elements and then removes a single element
+	 * Test is empty is false after adding two elements and then removing a single element
 	 */
 	@Test
 	public final void testIsEmptyIsFalseAfterAddingTwoElementsAndRemovingOne() {
@@ -265,34 +286,174 @@ public class UnorderedArrayListTests {
 		assertFalse(list.isEmpty());
 	}
 	
-
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#size()}
-	 * after adding elements to the front
+	 * Test that removeFirst removes the first element
 	 */
 	@Test
-	public final void testSizeAfterAddingElementsToFront() {
-		int expected = 3;
+	public final void testRemoveFirstRemovesFirstElement() {
 		list.addToFront(1);
 		list.addToFront(2);
-		list.addToFront(3);
-		assertEquals(expected, list.size());
+		Integer result = list.removeFirst();
+		assertEquals(result, new Integer(2));
+		assertEquals(new Integer(1), list.first());
 	}
 	
 	/**
-	 * Test method for
-	 * {@link com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList#size()}
-	 * after adding elements to the rear
+	 * Test that removeLast removes the last element
+	 */
+	public final void testRemoveLastRemovesLastElement() {
+		list.addToFront(1);
+		list.addToRear(2);
+		Integer result = list.removeLast();
+		assertEquals(result, new Integer(2));
+		assertEquals(new Integer(1), list.last());
+	}
+	
+	/**
+	 * Test that remove removes the correct element
 	 */
 	@Test
-	public final void testSizeAfterAddingElementsToRear() {
-		int expected = 3;
-		list.addToRear(1);
-		list.addToRear(2);
-		list.addToRear(3);
-		assertEquals(expected, list.size());
+	public final void testRemoveSpecifiedElementRemovesCorrectElement() {
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		Integer result = list.remove(2);
+		assertEquals(result, new Integer(2));
+	}
+	
+	/**
+	 * Test that contains returns true when the element is present
+	 */
+	@Test
+	public final void testContainsReturnsTrueWhenElementPresent() {
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		assertTrue(list.contains(2));
+	}
+	
+	/**
+	 * Test that contains returns false when the element is not present
+	 */
+	@Test
+	public final void testContainsReturnsFalseWhenElementNotPresent() {
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		assertFalse(list.contains(4));
+	}
+	
+	/**
+	 * Test that addAfter inserts the element in the correct position
+	 */
+	@Test
+	public final void testAddAfterAddsElementToCorrectPosition() {
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		list.addAfter(4, 2);
+		list.removeLast(); 
+		assertEquals(new Integer(4), list.last());
+	}
+	
+	/**
+	 * Test that first throws EmptyCollectionException when collection is empty
+	 */
+	@Test(expected = EmptyCollectionException.class)
+	public final void testFirstThrowsEmptyCollectionExceptionWhenEmpty() {
+		list.first();
+	}
+	
+	/**
+	 * Test that removeFirst throws EmptyCollectionException when collection is empty
+	 */
+	@Test(expected = EmptyCollectionException.class)
+	public final void testRemoveFirstThrowsEmptyCollectionExceptionWhenEmpty() {
+		list.removeFirst();
 	}
 
+	/**
+	 * Test that the collection throws ElementNotFoundException when attempting
+	 * to remove element that does not exist
+	 */
+	@Test(expected = ElementNotFoundException.class)
+	public final void testRemoveThrowsElementNotFoundExceptionWhenElementNotFound() {
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		list.remove(4);
+	}
+	
+	/**
+	 * Test that last throws EmptyCollectionException when collection is empty
+	 */
+	@Test(expected = EmptyCollectionException.class)
+	public final void testLastThrowsEmptyCollectionExceptionWhenEmpty() {
+		list.last();
+	}
+	
+	/**
+	 * Test that removeLast throws EmptyCollectionException when collection is empty
+	 */
+	@Test(expected = EmptyCollectionException.class)
+	public final void testRemoveLastThrowsEmptyCollectionExceptionWhenEmpty() {
+		list.removeLast();
+	}
+	
+	/**
+	 * Test that the iterator iterates all elements
+	 */
+	@Test
+	public final void testIteratorIteratesAllElements() {
+		fail("Not Implemented");
+	}
+	
+	/**
+	 * Test that the iterator hasNext returns true when there are more elements
+	 */
+	@Test
+	public final void testIteratorHasNextIsTrueWhenMoreElements() {
+		fail("Not Implemented");
+	}
+	
+	/**
+	 * Test that the iterator hasNext returns false when there are no more elements
+	 */
+	@Test
+	public final void testIteratorHasNextIsFalseWhenNoMoreElements() {
+		fail("Not Implemented");
+	}
+	
+	/**
+	 * Test that the iterator returns the correct element when calling next
+	 */
+	@Test
+	public final void testIteratorNextReturnsCorrectElement() {
+		fail("Not Implemented");
+	}
+	
+	/**
+	 * Test the iterator throws NoSuchElementException when calling next when no more elements
+	 */
+	@Test(expected = NoSuchElementException.class) 
+	public final void testIteratorThrowsNoSuchElementExceptionWhenNoMoreElements() {
+		fail("Not Implemented");
+	}
+	
+	/**
+	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 */
+	@Test(expected = ConcurrentModificationException.class)
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenModified() {
+		fail("Not Implemented");
+	}
 
+	/**
+	 * Test the iterator throws UnsupportedOperationException when calling remove
+	 */
+	@Test(expected = UnsupportedOperationException.class)
+	public final void testIteratorThrowsUnsupportedOperationExceptionWhenCallingRemove() {
+		Iterator<Integer> itr = list.iterator();
+		itr.remove();
+	}
 }
