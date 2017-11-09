@@ -63,7 +63,7 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 	}
 
 	/**
-	 * Constructor accepting initial capacity
+	 * Constructor accepting initial capacity, primarily for testing
 	 * 
 	 * @param capacity
 	 */
