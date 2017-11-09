@@ -405,7 +405,16 @@ public class UnorderedArrayListTests {
 	 */
 	@Test
 	public final void testIteratorIteratesAllElements() {
-		fail("Not Implemented");
+		Integer[] expected = { new Integer(3), new Integer(2), new Integer(1) };
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		Iterator<Integer> itr = list.iterator();
+		Integer[] actual = new Integer[3];
+		for (int i = 0; i <3; i++) {
+			actual[i] = itr.next();
+		}
+		assertArrayEquals(expected, actual);
 	}
 	
 	/**
@@ -413,7 +422,23 @@ public class UnorderedArrayListTests {
 	 */
 	@Test
 	public final void testIteratorHasNextIsTrueWhenMoreElements() {
-		fail("Not Implemented");
+		list.addToFront(1);
+		list.addToFront(2);
+		list.addToFront(3);
+		list.addToFront(4);
+		Iterator<Integer> itr = list.iterator();
+		if (itr.hasNext()) {
+			itr.next();
+		}
+		assertTrue(itr.hasNext());
+	}
+	
+	/**
+	 * Test the iterator hasNext returns true on an empty collection
+	 */
+	public final void testIteratorHasNextIsFalseWhenEmptyCollection() {
+		Iterator<Integer> itr = list.iterator();
+		assertFalse(itr.hasNext());
 	}
 	
 	/**
@@ -421,7 +446,8 @@ public class UnorderedArrayListTests {
 	 */
 	@Test
 	public final void testIteratorHasNextIsFalseWhenNoMoreElements() {
-		fail("Not Implemented");
+		Iterator<Integer> itr = list.iterator();
+		assertFalse(itr.hasNext());
 	}
 	
 	/**
@@ -429,7 +455,12 @@ public class UnorderedArrayListTests {
 	 */
 	@Test
 	public final void testIteratorNextReturnsCorrectElement() {
-		fail("Not Implemented");
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		itr.next(); //discard the 2
+		Integer result = itr.next();
+		assertEquals(result, new Integer(1));
 	}
 	
 	/**
@@ -437,15 +468,90 @@ public class UnorderedArrayListTests {
 	 */
 	@Test(expected = NoSuchElementException.class) 
 	public final void testIteratorThrowsNoSuchElementExceptionWhenNoMoreElements() {
-		fail("Not Implemented");
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		itr.next();
+		itr.next();
+		itr.next(); //should throw
 	}
 	
 	/**
 	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 * by calling AddToFront on the list
 	 */
 	@Test(expected = ConcurrentModificationException.class)
-	public final void testIteratorThrowsConcurrentModificationExceptionWhenModified() {
-		fail("Not Implemented");
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenAddToFrontCalled() {
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		list.addToFront(3);
+		itr.hasNext(); //this should throw
+	}
+	
+	/**
+	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 * by calling AddToRear on the list
+	 */
+	@Test(expected = ConcurrentModificationException.class)
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenAddToRearCalled() {
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		list.addToRear(3);
+		itr.hasNext(); //this should throw
+	}
+	
+	/**
+	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 * by calling RemoveFirst on the list
+	 */
+	@Test(expected = ConcurrentModificationException.class)
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenRemoveFirstCalled() {
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		list.removeFirst();
+		itr.hasNext(); //this should throw
+	}
+	
+	/**
+	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 * by calling RemoveLast on the list
+	 */
+	@Test(expected = ConcurrentModificationException.class)
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenRemoveLastCalled() {
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		list.removeLast();
+		itr.hasNext(); //this should throw
+	}
+	
+	/**
+	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 * by calling Remove on the list
+	 */
+	@Test(expected = ConcurrentModificationException.class)
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenRemoveCalled() {
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		list.remove(1);
+		itr.hasNext(); //this should throw
+	}
+	
+	/**
+	 * Test the iterator throws a ConcurrentModificationException if modified during use
+	 * by calling AddAfter on the list
+	 */
+	@Test(expected = ConcurrentModificationException.class)
+	public final void testIteratorThrowsConcurrentModificationExceptionWhenAddAfterCalled() {
+		list.addToFront(1);
+		list.addToFront(2);
+		Iterator<Integer> itr = list.iterator();
+		list.addAfter(3,1);
+		itr.hasNext(); //this should throw
 	}
 
 	/**

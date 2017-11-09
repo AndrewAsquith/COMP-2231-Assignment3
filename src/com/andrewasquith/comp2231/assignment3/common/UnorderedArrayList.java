@@ -10,11 +10,12 @@ package com.andrewasquith.comp2231.assignment3.common;
  * Import for Arrays.copyOf
  */
 import java.util.Arrays;
-
+import java.util.ConcurrentModificationException;
 /**
  * import the Iterator<T> interface
  */
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * import jsjf Interfaces and exceptions
@@ -50,6 +51,11 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 	private int rear = -1;
 
 	/**
+	 * Modification count to support the fail fast iterator
+	 */
+	private int modCount;
+
+	/**
 	 * Default constructor with default capacity
 	 */
 	public UnorderedArrayList() {
@@ -64,6 +70,7 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 	@SuppressWarnings("unchecked")
 	public UnorderedArrayList(int capacity) {
 		internalArray = (T[]) new Object[capacity];
+		modCount = 0;
 	}
 
 	/**
@@ -109,7 +116,7 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 	@Override
 	public T removeFirst() throws EmptyCollectionException {
 
-		//if empty, throw
+		// if empty, throw
 		if (isEmpty()) {
 			throw new EmptyCollectionException("UnorderedArrayList");
 		}
@@ -127,6 +134,9 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 		// decrement rear pointer
 		rear--;
 
+		// increase the modification count
+		modCount++;
+
 		// return the requested element
 		return result;
 	}
@@ -141,17 +151,23 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 	@Override
 	public T removeLast() throws EmptyCollectionException {
 
-		//if empty, throw
+		// if empty, throw
 		if (isEmpty()) {
 			throw new EmptyCollectionException("UnorderedArrayList");
 		}
 
 		// get the element from the rear
 		T result = internalArray[rear];
+
 		// null out the existing rear
 		internalArray[rear] = null;
+
 		// decrement rear pointer
 		rear--;
+
+		// increase the modification count
+		modCount++;
+
 		// return the requested element
 		return result;
 
@@ -188,6 +204,9 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 
 			// decrement the rear counter
 			rear--;
+
+			// increase the modification count
+			modCount++;
 
 			// return the requested element
 			return result;
@@ -287,6 +306,9 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 			internalArray[i] = internalArray[i - 1];
 		}
 
+		// increase the modification count
+		modCount++;
+
 		// add the new element to the front
 		internalArray[0] = element;
 	}
@@ -307,6 +329,9 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 
 		// increment rear
 		rear++;
+
+		// increase the modification count
+		modCount++;
 
 		// no need to shift, just put in place
 		internalArray[rear] = element;
@@ -352,9 +377,11 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 				internalArray[i] = internalArray[i - 1];
 			}
 
+			// increase the modification count
+			modCount++;
+
 			// put the new element in place
 			internalArray[targetIndex + 1] = element;
-
 		}
 	}
 
@@ -365,8 +392,82 @@ public class UnorderedArrayList<T> implements UnorderedListADT<T> {
 	 */
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new UnorderedArrayListIterator();
+	}
+
+	private class UnorderedArrayListIterator implements Iterator<T> {
+
+		/**
+		 * Iterator mod count for concurrent modification
+		 */
+		private int iteratorModCount;
+
+		/**
+		 * The currently referenced index
+		 */
+		private int currentIndex;
+
+		public UnorderedArrayListIterator() {
+			iteratorModCount = modCount;
+
+			// start at the index before the front
+			currentIndex = -1;
+		}
+
+		/**
+		 * Determine if there are more elements in the collection
+		 * 
+		 * @return boolean true if elements remain, false if not
+		 * @throws ConcurrentModificationException
+		 *             if the collection was modified elsewhere
+		 */
+		@Override
+		public boolean hasNext() {
+
+			// if the collection was modified after instantiation, throw
+			if (iteratorModCount != modCount) {
+				throw new ConcurrentModificationException();
+			}
+
+			// if not pointing at the rear there are more elements
+			return (currentIndex < rear);
+		}
+
+		/**
+		 * Return a reference to the next item in the collection
+		 * 
+		 * @throws ConcurrentModificationException
+		 *             if the collection was modified elsewhere
+		 * @throws NoSuchElementException
+		 *             if the end of the collection has been reached
+		 */
+		@Override
+		public T next() {
+
+			// if the collection was modified after instantiation, throw
+			if (iteratorModCount != modCount) {
+				throw new ConcurrentModificationException();
+			}
+
+			// if we're at the end and calling next again, throw
+			if (currentIndex == rear) {
+				throw new NoSuchElementException();
+			}
+
+			// increment the pointer and return the element at the index
+			return internalArray[++currentIndex];
+		}
+
+		/**
+		 * Remove the last returned item, not implemented
+		 * 
+		 * @throws UnsupportedOperationException
+		 *             when called
+		 */
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
 	}
 
 }
