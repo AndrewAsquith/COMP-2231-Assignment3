@@ -12,6 +12,11 @@ package com.andrewasquith.comp2231.assignment3.tests;
 import static org.junit.Assert.*;
 
 /**
+ * JUnit Test Attribute
+ */
+import org.junit.Test;
+
+/**
  * Other API interfaces and exceptions
  */
 import java.util.Iterator;
@@ -19,17 +24,8 @@ import java.util.NoSuchElementException;
 import java.util.ConcurrentModificationException;
 
 /**
- * Junit annotations
+ * Interface classes under test will implement
  */
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-/**
- * Class under test
- */
-import com.andrewasquith.comp2231.assignment3.common.UnorderedArrayList;
-
 import jsjf.UnorderedListADT;
 /**
  * Required exceptions for expectations
@@ -38,7 +34,7 @@ import jsjf.exceptions.ElementNotFoundException;
 import jsjf.exceptions.EmptyCollectionException;
 
 /**
- * UnorderedList Test Fixture
+ * Abstract UnorderedList Test Fixture
  * Exercises classes implementing UnorderedList functionality and it's Iterator
  * Individual test fixtures should inherit this class and provide the class 
  * under test in the setUp() method
@@ -46,6 +42,9 @@ import jsjf.exceptions.EmptyCollectionException;
  */
 public abstract class UnorderedListTests {
 
+	/**
+	 * List implementation must adhere to the UnorderedListADT<T> interface
+	 */
 	UnorderedListADT<Integer> list;
 
 
@@ -406,8 +405,7 @@ public abstract class UnorderedListTests {
 		list.addToFront(2);
 		Iterator<Integer> itr = list.iterator();
 		itr.next(); //discard the 2
-		Integer result = itr.next();
-		assertEquals(new Integer(1), result);
+		assertEquals(new Integer(1), itr.next());
 	}
 	
 	/**

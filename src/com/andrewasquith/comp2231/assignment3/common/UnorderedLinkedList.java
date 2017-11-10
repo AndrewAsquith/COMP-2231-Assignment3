@@ -404,7 +404,6 @@ public class UnorderedLinkedList<T> implements UnorderedListADT<T> {
 	
 	/**
 	 * Iterator class for the UnorderedLinkedLisk
-	 * @author Andrew
 	 *
 	 */
 	private class UnorderedLinkedListIterator implements Iterator<T> {
@@ -468,8 +467,16 @@ public class UnorderedLinkedList<T> implements UnorderedListADT<T> {
 			
 			return result;
 
-
-			
+		}
+		
+		/**
+		 * Remove the last returned item, not implemented
+		 * 
+		 * @throws UnsupportedOperationException
+		 *             when called
+		 */
+		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 		
 	}

@@ -13,6 +13,10 @@ import static org.junit.Assert.assertEquals;
  */
 import org.junit.After;
 import org.junit.Before;
+
+/**
+ * JUnit Test Attribute
+ */
 import org.junit.Test;
 
 /**

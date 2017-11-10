@@ -23,7 +23,7 @@ import com.andrewasquith.comp2231.assignment3.common.UnorderedLinkedList;
  */
 public class UnorderedLinkedListTests extends UnorderedListTests {
 	/**
-	 * Create a new list with a capacity of 10
+	 * Create a new list of the UnorderedLinkedList<T> type
 	 * 
 	 * @throws java.lang.Exception
 	 */
